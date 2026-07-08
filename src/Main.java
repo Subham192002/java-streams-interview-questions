@@ -77,7 +77,31 @@ public class Main {
 
         System.out.println(result5);
 
-        // 7.
+        // 7. Find the first employee whose salary is greater than 50000
+
+        List<Employee> employees = List.of(
+                new Employee(101, "John", "IT", 45000),
+                new Employee(102, "Alice", "HR", 55000),
+                new Employee(103, "Bob", "Finance", 70000),
+                new Employee(104, "David", "IT", 48000),
+                new Employee(105, "Emma", "Admin", 52000),
+                new Employee(106, "Michael", "Finance", 65000),
+                new Employee(107, "Sophia", "HR", 43000),
+                new Employee(108, "James", "IT", 80000),
+                new Employee(109, "Olivia", "Admin", 49000),
+                new Employee(110, "William", "Finance", 90000)
+        );
+
+        Optional<Employee> employee = employees.stream()
+                .filter(e -> e.getSalary() > 50000)
+                .findFirst();
+
+        employee.ifPresent(System.out::println);
+
+
+
+
+
 
     }
 }
