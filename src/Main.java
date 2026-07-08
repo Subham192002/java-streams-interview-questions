@@ -127,6 +127,23 @@ public class Main {
 
         System.out.println(result6);
 
+        // 11. Count how many employees are in each department
+
+        Map<String, Long> employees3 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,
+                        Collectors.counting()));
+
+        System.out.println(employees3);
+
+        // 13. Find the average salary in each department
+
+        Map<String, Double> employees4 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,
+                        Collectors.averagingDouble(Employee::getSalary)));
+
+        System.out.println(employees4);
+
+
 
     }
 }
