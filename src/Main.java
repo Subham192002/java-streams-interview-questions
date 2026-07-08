@@ -85,6 +85,7 @@ public class Main {
                 new Employee(103, "Bob", "Finance", 70000),
                 new Employee(104, "David", "IT", 48000),
                 new Employee(105, "Emma", "Admin", 52000),
+                new Employee(105, "Abha", "Admin", 52000),
                 new Employee(106, "Michael", "Finance", 65000),
                 new Employee(107, "Sophia", "HR", 43000),
                 new Employee(108, "James", "IT", 80000),
@@ -98,9 +99,33 @@ public class Main {
 
         employee.ifPresent(System.out::println);
 
+        // 8. Find top 2 highest paid employees
 
+        List<Employee> employees1 = employees.stream()
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
+                .limit(2)
+                .toList();
 
+        System.out.println(employees1);
 
+        // 9. Sort the employees by salary then name
+
+        List<Employee> employees2 = employees.stream()
+                .sorted(Comparator.comparingDouble(Employee::getSalary)
+                        .thenComparing(Employee::getName))
+                        .toList();
+
+        System.out.println(employees2);
+
+        // 10. FInd the frequency of each element
+
+        List<Integer> list6 = List.of(1,2,3,5,3,2,2,9,1,1);
+
+        Map<Integer,Long> result6=list6.stream()
+                .collect(Collectors.groupingBy(elem->elem,
+                        Collectors.counting()));
+
+        System.out.println(result6);
 
 
     }
