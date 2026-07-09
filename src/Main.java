@@ -143,6 +143,19 @@ public class Main {
 
         System.out.println(employees4);
 
+        // 14. Find Highest Paid Employee from Every Department
+
+        Map<String, Employee> collect = employees.stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getDepartment,
+                        Collectors.collectingAndThen(
+                                Collectors.maxBy(
+                                        Comparator.comparingDouble(Employee::getSalary)
+                                ), Optional::get
+                        )
+                ));
+
+        System.out.println(collect);
 
 
     }
