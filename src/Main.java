@@ -170,5 +170,45 @@ public class Main {
 
         System.out.println(collect1);
 
+        // 16. Find the common between 2 list
+
+        List<Integer> listA = List.of(1,2,3,4);
+        List<Integer> listB = List.of(3,4,5,6,7);
+
+        List<Integer> results = listB.stream()
+                .filter(listA::contains)
+                .toList();                               // O(N^2)
+
+        System.out.println(results);
+
+        Set<Integer> setA = new HashSet<>(listA);
+        List<Integer> results1 = listB.stream()
+                .filter(setA::contains)
+                .toList();                            // O(N)
+
+        System.out.println(results1);
+
+        // 17. Flatten a list of lists & remove duplicates
+
+        List<List<Integer>> listOfLists = new ArrayList<>();
+
+        listOfLists.add(Arrays.asList(1, 2, 3, 4));
+        listOfLists.add(Arrays.asList(2, 3, 5, 6));
+        listOfLists.add(Arrays.asList(1, 4, 7, 8));
+        listOfLists.add(Arrays.asList(3, 6, 8, 9));
+        listOfLists.add(Arrays.asList(1, 2, 9, 10));
+
+        List<Integer> resultList = listOfLists.stream()
+                .flatMap(innerList -> innerList.stream())
+                .distinct()
+                .toList();
+
+        System.out.println(resultList);
+
+        // 18. Print all employee names as fast as possible (parallel streams)
+
+        employees.parallelStream()
+                .map(Employee::getName)
+                .forEach(System.out::println);
     }
 }
