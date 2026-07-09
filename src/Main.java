@@ -157,6 +157,18 @@ public class Main {
 
         System.out.println(collect);
 
+        // 15. Find Duplicate Elements and Their Counts
+
+        List<Integer> nums = List.of(1,2,3,2,4,1,5,2);
+
+        Map<Integer, Long> collect1 = nums.stream()
+                .collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(e->e.getValue()>1)
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
+
+        System.out.println(collect1);
 
     }
 }
