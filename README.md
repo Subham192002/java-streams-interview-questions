@@ -22,6 +22,7 @@ A collection of commonly asked Java Stream API interview questions with solution
 - Find Top 2 Highest Paid Employees
 - Sort Employees by Salary and Name
 - Find Highest Paid Employee from Each Department
+- Find Employees Whose Salary Is Greater Than Their Department Average Salary
 
 ### Advanced Stream Questions
 - Find Duplicate Elements and Their Counts

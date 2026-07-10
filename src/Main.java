@@ -210,5 +210,32 @@ public class Main {
         employees.parallelStream()
                 .map(Employee::getName)
                 .forEach(System.out::println);
+
+        // 19. Find Employees Whose Salary Is Greater Than Their Department Average Salary
+
+        List<Employee> employees5 = List.of(
+                new Employee(101, "John", "IT", 45000),
+                new Employee(102, "Alice", "HR", 55000),
+                new Employee(103, "Bob", "Finance", 70000),
+                new Employee(104, "David", "IT", 48000),
+                new Employee(105, "Emma", "Admin", 52000),
+                new Employee(106, "Michael", "Finance", 65000),
+                new Employee(107, "Sophia", "HR", 43000),
+                new Employee(108, "James", "IT", 80000),
+                new Employee(109, "Olivia", "Admin", 49000),
+                new Employee(110, "William", "Finance", 90000)
+        );
+
+        Map<String, Double> deptAvgSalary  = employees5.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
+
+        System.out.println(deptAvgSalary );
+
+        List<Employee> list7 = employees5.stream()
+                .filter(e -> e.getSalary() > deptAvgSalary.get(e.getDepartment()))
+                .toList();
+
+        System.out.println(list7);
+
     }
 }
