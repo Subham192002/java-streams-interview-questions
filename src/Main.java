@@ -1,7 +1,14 @@
 import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Main {
+
+    private static final Logger log =
+            Logger.getLogger(Main.class.getName());
+
 
     static void main() {
 
@@ -14,7 +21,7 @@ public class Main {
                 .sorted(Comparator.reverseOrder())
                 .toList();
 
-        System.out.println(result);
+        log.info(() -> "List: " + result);
 
         // 2. Find all odd numbers and return their squares
 
@@ -25,7 +32,7 @@ public class Main {
                 .map(elem->elem*elem)
                 .toList();
 
-        System.out.println(result1);
+        log.info(() -> "Odd numbers squared: " + result1);
 
         // 3. Get 2nd and 3rd element form the list and return them in a list
 
@@ -36,7 +43,7 @@ public class Main {
                 .limit(2)
                 .toList();
 
-        System.out.println(result2);
+        log.info(() -> "Second and third elements: " + result2);
 
         // 4. Find 2nd highest number in a list
 
@@ -50,14 +57,12 @@ public class Main {
                 .findFirst();
 
         // if second largest not present then it will throw exception
-        result3.ifPresent(System.out::println);
+        result3.ifPresent(value1 ->
+                log.info(() -> "Second highest number: " + value1));
 
         // 5. Divide numbers into even and odd
 
         List<Integer> list4 = List.of(1, 2, 3, 4, 5,6,7,8);
-
-//        Map<Boolean, List<Integer>> result = list.stream()
-//                        .collect(Collectors.partitioningBy(n -> n % 2 == 0));
 
         Map<String, List<Integer>> result4 = list4.stream()
                 .collect(Collectors.groupingBy(n->n%2==0 ? "Even" : "Odd"));
@@ -65,7 +70,7 @@ public class Main {
         // partitioningBy() always returns a Map<Boolean, List<T>> (2 groups only).
         //groupingBy() can create any number of groups based on the classifier function.
 
-        System.out.println(result4);
+        log.info(() -> "Even/Odd grouping: " + result4);
 
         // 6. Find Longest String in a List
 
@@ -75,7 +80,7 @@ public class Main {
                 .max(Comparator.comparing(String::length))
                 .orElse("");
 
-        System.out.println(result5);
+        log.info(() -> "Longest String: " + result5);
 
         // 7. Find the first employee whose salary is greater than 50000
 
@@ -97,7 +102,8 @@ public class Main {
                 .filter(e -> e.getSalary() > 50000)
                 .findFirst();
 
-        employee.ifPresent(System.out::println);
+        employee.ifPresent(emp ->
+                log.info(() -> "First employee with salary > 50000: " + emp));
 
         // 8. Find top 2 highest paid employees
 
@@ -106,7 +112,7 @@ public class Main {
                 .limit(2)
                 .toList();
 
-        System.out.println(employees1);
+        log.info(() -> "Top 2 highest paid employees: " + employees1);
 
         // 9. Sort the employees by salary then name
 
@@ -115,7 +121,7 @@ public class Main {
                         .thenComparing(Employee::getName))
                         .toList();
 
-        System.out.println(employees2);
+        log.info(() -> "Employees sorted by salary then name: " + employees2);
 
         // 10. FInd the frequency of each element
 
@@ -125,7 +131,7 @@ public class Main {
                 .collect(Collectors.groupingBy(elem->elem,
                         Collectors.counting()));
 
-        System.out.println(result6);
+        log.info(() -> "Frequency of each element: " + result6);
 
         // 11. Count how many employees are in each department
 
@@ -133,7 +139,7 @@ public class Main {
                 .collect(Collectors.groupingBy(Employee::getDepartment,
                         Collectors.counting()));
 
-        System.out.println(employees3);
+        log.info(() -> "Employee count by department: " + employees3);
 
         // 13. Find the average salary in each department
 
@@ -141,21 +147,14 @@ public class Main {
                 .collect(Collectors.groupingBy(Employee::getDepartment,
                         Collectors.averagingDouble(Employee::getSalary)));
 
-        System.out.println(employees4);
+        log.info(() -> "Average salary by department: " + employees4);
 
         // 14. Find Highest Paid Employee from Every Department
 
         Map<String, Employee> collect = employees.stream()
-                .collect(Collectors.groupingBy(
-                        Employee::getDepartment,
-                        Collectors.collectingAndThen(
-                                Collectors.maxBy(
-                                        Comparator.comparingDouble(Employee::getSalary)
-                                ), Optional::get
-                        )
-                ));
+                .collect(Collectors.toMap(Employee::getDepartment, Function.identity(), BinaryOperator.maxBy(Comparator.comparingDouble(Employee::getSalary))));
 
-        System.out.println(collect);
+        log.info(() -> "Highest paid employee from every department: " + collect);
 
         // 15. Find Duplicate Elements and Their Counts
 
@@ -168,7 +167,7 @@ public class Main {
                 .filter(e->e.getValue()>1)
                 .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
 
-        System.out.println(collect1);
+        log.info(() -> "Duplicate elements and counts: " + collect1);
 
         // 16. Find the common between 2 list
 
@@ -179,14 +178,14 @@ public class Main {
                 .filter(listA::contains)
                 .toList();                               // O(N^2)
 
-        System.out.println(results);
+        log.info(() -> "Common elements O(N²): " + results);
 
         Set<Integer> setA = new HashSet<>(listA);
         List<Integer> results1 = listB.stream()
                 .filter(setA::contains)
                 .toList();                            // O(N)
 
-        System.out.println(results1);
+        log.info(() -> "Common elements O(N): " + results1);
 
         // 17. Flatten a list of lists & remove duplicates
 
@@ -199,17 +198,18 @@ public class Main {
         listOfLists.add(Arrays.asList(1, 2, 9, 10));
 
         List<Integer> resultList = listOfLists.stream()
-                .flatMap(innerList -> innerList.stream())
+                .flatMap(Collection::stream)
                 .distinct()
                 .toList();
 
-        System.out.println(resultList);
+        log.info(() -> "Flattened list with distinct elements: " + resultList);
 
         // 18. Print all employee names as fast as possible (parallel streams)
 
         employees.parallelStream()
                 .map(Employee::getName)
-                .forEach(System.out::println);
+                .forEach(name ->
+                        log.info(() -> "Employee Name: " + name));
 
         // 19. Find Employees Whose Salary Is Greater Than Their Department Average Salary
 
@@ -229,13 +229,13 @@ public class Main {
         Map<String, Double> deptAvgSalary  = employees5.stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
 
-        System.out.println(deptAvgSalary );
+        log.info(() -> "Department average salary: " + deptAvgSalary);
 
         List<Employee> list7 = employees5.stream()
                 .filter(e -> e.getSalary() > deptAvgSalary.get(e.getDepartment()))
                 .toList();
 
-        System.out.println(list7);
+        log.info(() -> "Employees above department average salary: " + list7);
 
     }
 }
