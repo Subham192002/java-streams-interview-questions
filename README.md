@@ -90,7 +90,3 @@ employees.stream()
          ));
 ```
 
-## Author
-
-**Subham Mishra**
-Software Engineer | Java Backend Developer | Spring Boot
