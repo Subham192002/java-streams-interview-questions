@@ -1,13 +1,34 @@
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.logging.Formatter;
 
 public class Main {
 
     private static final Logger log =
             Logger.getLogger(Main.class.getName());
+
+    static {
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+
+        for (Handler handler : handlers) {
+            handler.setFormatter(new Formatter() {
+                @Override
+                public String format(LogRecord rec) {
+                    return String.format(
+                            "{\"level\":\"%s\",\"message\":\"%s\"}%n",
+                            rec.getLevel(),
+                            rec.getMessage()
+                    );
+                }
+            });
+        }
+    }
 
 
     static void main() {
