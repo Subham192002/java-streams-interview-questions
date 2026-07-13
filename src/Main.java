@@ -238,7 +238,7 @@ public class Main {
                 new Employee(101, "John", "IT", 45000),
                 new Employee(102, "Alice", "HR", 55000),
                 new Employee(103, "Bob", "Finance", 70000),
-                new Employee(104, "David", "IT", 48000),
+                new Employee(104, "David", "IT", 45000),
                 new Employee(105, "Emma", "Admin", 52000),
                 new Employee(106, "Michael", "Finance", 65000),
                 new Employee(107, "Sophia", "HR", 43000),
@@ -257,6 +257,17 @@ public class Main {
                 .toList();
 
         log.info(() -> "Employees above department average salary: " + list7);
+
+        // 20. Find Employees Having Same Salary
+
+        Map<Double, List<Employee>> res = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getSalary));
+
+        res.entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() > 1)
+                .forEach(e -> log.info(() ->
+                        "Salary: " + e.getKey() + " Employees: " + e.getValue()));
 
     }
 }
